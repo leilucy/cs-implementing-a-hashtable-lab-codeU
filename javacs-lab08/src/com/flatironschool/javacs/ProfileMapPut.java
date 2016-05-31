@@ -2,19 +2,21 @@ package com.flatironschool.javacs;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.jfree.data.xy.XYSeries;
 
 import com.flatironschool.javacs.Profiler.Timeable;
 
 public class ProfileMapPut {
-	
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		//profileHashMapPut();
-		profileMyHashMapPut();
+		//profileMyHashMapPut();
+		profileMyFixedHashMapPut();
 	}
 
 	/**
@@ -38,7 +40,7 @@ public class ProfileMapPut {
 		int endMillis = 1000;
 		runProfiler("HashMap put", timeable, startN, endMillis);
 	}
-	
+
 	/**
 	 * Characterize the run time of putting a key in MyHashMap
 	 */
@@ -60,10 +62,33 @@ public class ProfileMapPut {
 		int endMillis = 5000;
 		runProfiler("MyHashMap put", timeable, startN, endMillis);
 	}
-	
+
+
+	/**
+	 * Characterize the run time of putting a key in MyFixedHashMap
+	 */
+	public static void profileMyFixedHashMapPut() {
+		Timeable timeable = new Timeable() {
+			Map<String, Integer> map;
+
+			public void setup(int n) {
+				map = new MyFixedHashMap<String, Integer>();
+			}
+
+			public void timeMe(int n) {
+				for (int i=0; i<n; i++) {
+					map.put(String.format("%10d", i), i);
+				}
+			}
+		};
+		int startN = 8000;
+		int endMillis = 1000;
+		runProfiler("MyFixedHashMap put", timeable, startN, endMillis);
+	}
+
 	/**
 	 * Runs the profiles and displays results.
-	 * 
+	 *
 	 * @param timeable
 	 * @param startN
 	 * @param endMillis
